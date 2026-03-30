@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Shiri Radha Tiffin | Premium</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
+    body { font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; scroll-behavior: smooth; }
+    .day-btn { aspect-ratio: 1/1; border-radius: 8px; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+    .day-taken { background: #059669; color: white; box-shadow: 0 4px 6px -1px rgba(5, 150, 105, 0.2); }
+    .day-empty { background: #f8fafc; color: #cbd5e1; border: 1px solid #e2e8f0; }
+    .filter-active { background: #ea580c; color: white; border-color: #ea580c; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .notif-badge { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen pb-20">
+
+<nav class="sticky top-0 z-50 bg-white border-b border-slate-200 px-6 py-4 flex justify-between items-center shadow-sm">
+  <div class="flex items-center gap-2">
+    <div class="w-8 h-8 bg-orange-600 rounded-lg flex items-center justify-center text-white font-black italic shadow-lg">SR</div>
+    <span class="font-extrabold text-slate-800 tracking-tight">SHIRI RADHA</span>
+  </div>
+  <button id="logoutBtn" onclick="location.reload()" class="hidden text-[10px] font-black text-rose-500 bg-rose-50 px-3 py-2 rounded-xl">LOGOUT</button>
+</nav>
+
+<div id="authBox" class="max-w-md mx-auto mt-16 px-6">
+    <div class="bg-white p-8 rounded-[2.5rem] shadow-2xl border border-slate-100">
+        <h2 class="text-2xl font-black mb-1">Sign In</h2>
+        <p class="text-slate-400 text-xs mb-8 font-bold uppercase tracking-widest">Management Portal</p>
+        <input id="loginUser" placeholder="Username" class="w-full p-4 bg-slate-50 rounded-2xl mb-3 outline-none border-2 border-transparent focus:border-orange-500 transition font-bold">
+        <input id="loginPass" type="password" placeholder="Password" class="w-full p-4 bg-slate-50 rounded-2xl mb-8 outline-none border-2 border-transparent focus:border-orange-500 transition font-bold">
+        <button onclick="login()" class="w-full bg-orange-600 text-white py-4 rounded-2xl font-black shadow-xl shadow-orange-100 active:scale-95 transition">Enter Workspace</button>
+    </div>
+</div>
+
+<div id="ownerDash" class="hidden max-w-2xl mx-auto p-4">
+    <div id="notificationSection" class="hidden mb-6">
+        <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 px-2">Alerts & Expired Plans</h3>
+        <div id="notifList" class="space-y-2"></div>
+    </div>
+
+    <div id="shiftSummary" class="bg-white p-5 rounded-3xl border border-slate-200 mb-6 flex justify-around items-center shadow-sm text-center">
+        <div><p class="text-[9px] font-black text-slate-400 uppercase">Morning</p><p id="countM" class="text-xl font-black text-orange-600">0</p></div>
+        <div class="h-8 w-px bg-slate-100"></div>
+        <div><p class="text-[9px] font-black text-slate-400 uppercase">Night</p><p id="countN" class="text-xl font-black text-indigo-600">0</p></div>
+        <div class="h-8 w-px bg-slate-100"></div>
+        <div><p class="text-[9px] font-black text-slate-400 uppercase">Both</p><p id="countB" class="text-xl font-black text-emerald-600">0</p></div>
+    </div>
+
+    <div class="sticky top-[73px] z-40 bg-slate-50/95 backdrop-blur pb-4">
+        <input id="searchBar" oninput="filterList()" placeholder="Search customer..." class="w-full p-4 bg-white rounded-2xl border border-slate-200 shadow-sm outline-none mb-3 font-bold text-sm">
+        <div class="flex gap-2 overflow-x-auto no-scrollbar">
+            <button onclick="setCategoryFilter('All')" class="cat-filter filter-active shrink-0 px-6 py-2 rounded-xl text-[10px] font-black uppercase border border-slate-200">All</button>
+            <button onclick="setCategoryFilter('Morning')" class="cat-filter shrink-0 px-6 py-2 rounded-xl text-[10px] font-black uppercase border border-slate-200 bg-white text-slate-400">Morning</button>
+            <button onclick="setCategoryFilter('Night')" class="cat-filter shrink-0 px-6 py-2 rounded-xl text-[10px] font-black uppercase border border-slate-200 bg-white text-slate-400">Night</button>
+            <button onclick="setCategoryFilter('Both')" class="cat-filter shrink-0 px-6 py-2 rounded-xl text-[10px] font-black uppercase border border-slate-200 bg-white text-slate-400">Both</button>
+        </div>
+    </div>
+
+    <details class="bg-slate-900 text-white rounded-3xl mb-8 overflow-hidden shadow-xl group">
+        <summary class="p-5 font-black text-sm flex justify-between items-center list-none cursor-pointer">
+            <span>REGISTRATION PANEL</span>
+            <span class="group-open:rotate-45 transition">＋</span>
+        </summary>
+        <div class="p-6 pt-0 space-y-3">
+            <input id="custName" placeholder="Name" class="w-full p-4 rounded-xl text-slate-900 outline-none font-bold">
+            <input id="custPass" placeholder="Password" class="w-full p-4 rounded-xl text-slate-900 outline-none font-bold">
+            <div class="grid grid-cols-2 gap-2">
+                <select id="custType" class="p-4 rounded-xl text-slate-900 font-bold">
+                    <option value="Morning">Morning</option><option value="Night">Night</option><option value="Both">Both</option>
+                </select>
+                <input id="custDays" type="number" placeholder="Days (e.g. 28)" value="28" class="p-4 rounded-xl text-slate-900 font-bold outline-none">
+            </div>
+            <input id="custExpiry" type="date" class="w-full p-4 rounded-xl text-slate-900 font-bold">
+            <button onclick="addCustomer()" class="w-full bg-orange-600 py-4 rounded-xl font-black uppercase text-xs tracking-widest shadow-lg active:scale-95 transition">Add Customer</button>
+        </div>
+    </details>
+
+    <div id="customerContainer" class="space-y-4"></div>
+</div>
+
+<div id="custDash" class="hidden max-w-xl mx-auto p-6">
+    <div class="bg-white p-8 rounded-[2.5rem] shadow-xl border border-slate-100 text-center mb-6">
+        <h2 id="helloName" class="text-3xl font-black text-slate-800"></h2>
+        <div id="custExpBadge" class="inline-block px-4 py-1 bg-orange-50 text-orange-600 rounded-full text-[10px] font-black uppercase mt-2 mb-8"></div>
+        <div class="grid grid-cols-7 gap-1.5 mb-8" id="custCalendar"></div>
+        <div class="flex justify-between p-5 bg-slate-50 rounded-2xl border border-slate-100">
+            <div class="text-left"><p class="text-[9px] font-black text-slate-400 uppercase">Total Usage</p><p id="custTotal" class="text-lg font-black text-orange-600"></p></div>
+            <div class="text-right"><p class="text-[9px] font-black text-slate-400 uppercase">Tiffin Slot</p><p id="planTypeDisplay" class="text-sm font-bold text-slate-700"></p></div>
+        </div>
+    </div>
+
+    <div class="bg-slate-950 text-white p-8 rounded-[2.5rem] text-center shadow-2xl">
+        <h4 class="font-black text-xl mb-6">Monthly Renewal</h4>
+        <div class="bg-white p-4 rounded-2xl inline-block mb-2">
+            <img id="qrImg" src="https://raw.githubusercontent.com/omt8861/localrepo/ef13ab91b12ddfba5f7f2d14e2c1d3ad40ea7793/QR%20tiffin.jpeg" class="w-36 h-36">
+        </div>
+        <div class="mb-6">
+            <button onclick="downloadQR()" class="text-[10px] font-black text-orange-400 uppercase border border-orange-400/30 px-4 py-1.5 rounded-full hover:bg-orange-400 hover:text-white transition">↓ Download QR Code</button>
+        </div>
+        <p class="text-[10px] text-slate-500 font-bold mb-6">UPI: 8319374266@ybl</p>
+        <a href="upi://pay?pa=8319374266@ybl&pn=Anurag%20Patel" class="block w-full bg-orange-600 py-4 rounded-2xl font-black shadow-lg">Pay Now via UPI</a>
+    </div>
+</div>
+
+<script>
+const firebaseConfig = { apiKey: "AIzaSyDLkhW1g4DqpLO5ItJv0ZYvuvx59znm1bg", authDomain: "collage-app-fc476.firebaseapp.com", projectId: "collage-app-fc476" };
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+const OWNER_NAME = "Anurag Patel"; const OWNER_PASS = "AN@8319374266";
+let currentFilter = 'All'; let allCustomers = [];
+
+async function login() {
+    const u = loginUser.value.trim(); const p = loginPass.value.trim();
+    if(u === OWNER_NAME && p === OWNER_PASS) showOwnerView();
+    else {
+        const snap = await db.collection("tiffin_customers").where("name", "==", u).where("pass", "==", p).get();
+        if(!snap.empty) showCustomerView({ id: snap.docs[0].id, ...snap.docs[0].data() });
+        else alert("Invalid Credentials");
+    }
+}
+
+function showOwnerView() {
+    authBox.classList.add('hidden'); logoutBtn.classList.remove('hidden'); ownerDash.classList.remove('hidden');
+    db.collection("tiffin_customers").onSnapshot(snap => {
+        allCustomers = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        updateShiftCounts();
+        checkNotifications();
+        filterList();
+    });
+}
+
+function checkNotifications() {
+    const today = new Date().toISOString().split('T')[0];
+    const expiredList = allCustomers.filter(c => {
+        const mDays = c.maxDays || 28;
+        return c.expiry < today || (c.attendance && c.attendance.length >= mDays);
+    });
+    
+    if (expiredList.length > 0) {
+        notificationSection.classList.remove('hidden');
+        notifList.innerHTML = expiredList.map(c => {
+            const mDays = c.maxDays || 28;
+            const isDaysFull = c.attendance && c.attendance.length >= mDays;
+            const isDatePast = c.expiry < today;
+            let label = isDatePast ? "DATE EXPIRED" : "USAGE FULL";
+            let color = isDatePast ? "bg-rose-100 text-rose-600" : "bg-amber-100 text-amber-600";
+            
+            return `
+                <div class="flex items-center justify-between p-4 bg-white rounded-2xl border border-slate-100 shadow-sm">
+                    <div class="flex items-center gap-3">
+                        <div class="w-2 h-2 rounded-full ${isDatePast ? 'bg-rose-500' : 'bg-amber-500'} notif-badge"></div>
+                        <div>
+                            <p class="text-xs font-black text-slate-800">${c.name}</p>
+                            <p class="text-[9px] font-bold text-slate-400">Ends: ${c.expiry} | Taken: ${c.attendance?.length || 0}/${mDays}</p>
+                        </div>
+                    </div>
+                    <span class="px-2 py-1 rounded-md text-[8px] font-black uppercase ${color}">${label}</span>
+                </div>
+            `;
+        }).join('');
+    } else {
+        notificationSection.classList.add('hidden');
+    }
+}
+
+function updateShiftCounts() {
+    countM.innerText = allCustomers.filter(c => c.type === 'Morning').length;
+    countN.innerText = allCustomers.filter(c => c.type === 'Night').length;
+    countB.innerText = allCustomers.filter(c => c.type === 'Both').length;
+}
+
+function setCategoryFilter(cat) {
+    currentFilter = cat;
+    document.querySelectorAll('.cat-filter').forEach(btn => {
+        btn.classList.toggle('filter-active', btn.innerText.includes(cat));
+        if(!btn.innerText.includes(cat)) {
+            btn.classList.add('bg-white', 'text-slate-400');
+        } else {
+            btn.classList.remove('bg-white', 'text-slate-400');
+        }
+    });
+    filterList();
+}
+
+function filterList() {
+    const query = searchBar.value.toLowerCase();
+    const filtered = allCustomers.filter(c => (c.name.toLowerCase().includes(query)) && (currentFilter === 'All' || c.type === currentFilter));
+    renderFiltered(filtered);
+}
+
+function renderFiltered(list) {
+    let html = "";
+    list.forEach(d => {
+        const used = d.attendance?.length || 0;
+        const max = d.maxDays || 28;
+        const today = new Date().toISOString().split('T')[0];
+        const isExpired = d.expiry < today;
+        
+        html += `
+        <div class="bg-white p-5 rounded-[2rem] border border-slate-200 shadow-sm ${isExpired ? 'opacity-75' : ''}">
+            <div class="flex justify-between items-center mb-5">
+                <div>
+                    <h4 class="font-black text-lg text-slate-800">${d.name}</h4>
+                    <p class="text-[9px] font-black text-orange-500 uppercase mt-0.5">${d.type} Plan (${max} Days)</p>
+                </div>
+                <button onclick="deleteCust('${d.id}')" class="text-slate-200 hover:text-rose-500 transition">✕</button>
+            </div>
+            <div class="grid grid-cols-7 gap-1">${renderCalendar(d.id, d.attendance || [], true, max)}</div>
+            <div class="mt-5 pt-4 border-t border-slate-50 flex justify-between items-center">
+                <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest">${used}/${max} DAYS</span>
+                <span class="text-[9px] font-bold ${isExpired || used >= max ? 'text-rose-500 animate-pulse' : 'text-slate-300'}">${isExpired ? 'EXPIRED: ' : ''}${d.expiry}</span>
+            </div>
+        </div>`;
+    });
+    customerContainer.innerHTML = html || "<p class='text-center py-10 font-bold text-slate-300'>No results found</p>";
+}
+
+function renderCalendar(docId, attendance, clickable, max) {
+    let html = "";
+    const totalSlots = max || 28;
+    for(let i=1; i<=totalSlots; i++) {
+        const taken = attendance.includes(i);
+        const action = clickable ? `onclick="toggleDay('${docId}', ${i}, ${totalSlots})"` : "";
+        html += `<button ${action} class="day-btn ${taken ? 'day-taken' : 'day-empty'}">${i}</button>`;
+    }
+    return html;
+}
+
+function toggleDay(id, day, max) {
+    const ref = db.collection("tiffin_customers").doc(id);
+    ref.get().then(doc => {
+        let att = doc.data().attendance || [];
+        if(att.includes(day)) {
+            att = att.filter(x => x !== day);
+        } else {
+            if(att.length < max) att.push(day);
+            else alert("Slot limit reached!");
+        }
+        ref.update({ attendance: att });
+    });
+}
+
+function addCustomer() {
+    const n = custName.value.trim(), 
+          p = custPass.value.trim(), 
+          t = custType.value, 
+          e = custExpiry.value,
+          d = parseInt(custDays.value) || 28;
+
+    if(n && p && e) {
+        db.collection("tiffin_customers").add({ 
+            name: n, 
+            pass: p, 
+            type: t, 
+            expiry: e, 
+            maxDays: d,
+            attendance: [], 
+            createdAt: Date.now() 
+        });
+        custName.value = ""; custPass.value = "";
+    } else {
+        alert("Please fill name, password and expiry date.");
+    }
+}
+
+function deleteCust(id) { if(confirm("Delete Customer?")) db.collection("tiffin_customers").doc(id).delete(); }
+
+function showCustomerView(data) {
+    authBox.classList.add('hidden'); logoutBtn.classList.remove('hidden'); custDash.classList.remove('hidden');
+    db.collection("tiffin_customers").doc(data.id).onSnapshot(doc => {
+        const d = doc.data();
+        const mDays = d.maxDays || 28;
+        helloName.innerText = "Namaste, " + d.name;
+        custExpBadge.innerText = "Plan Validity: " + d.expiry;
+        custTotal.innerText = (d.attendance?.length || 0) + " / " + mDays + " Days";
+        planTypeDisplay.innerText = d.type;
+        custCalendar.innerHTML = renderCalendar(null, d.attendance || [], false, mDays);
+    });
+}
+
+async function downloadQR() {
+    const img = document.getElementById('qrImg');
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    const response = await fetch(img.src);
+    const blob = await response.blob();
+    const reader = new FileReader();
+    reader.onload = function() {
+        const image = new Image();
+        image.onload = function() {
+            canvas.width = image.width;
+            canvas.height = image.height;
+            ctx.drawImage(image, 0, 0);
+            const link = document.createElement('a');
+            link.download = 'ShiriRadha_QR.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        };
+        image.src = reader.result;
+    };
+    reader.readAsDataURL(blob);
+}
+</script>
+</body>
+</html>

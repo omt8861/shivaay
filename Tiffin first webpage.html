@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shri Radha | Premium Tiffin Experiences</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+        
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; background-color: #fcfcfc; overflow-x: hidden; }
+
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .hero-gradient {
+            background: radial-gradient(circle at top right, #fff4e6, transparent),
+                        radial-gradient(circle at bottom left, #f0fdf4, transparent);
+        }
+
+        .corporate-card {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        @media (min-width: 768px) {
+            .corporate-card:hover {
+                transform: translateY(-12px);
+                box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+                border-color: #ea580c;
+            }
+        }
+
+        .btn-premium {
+            background: linear-gradient(135deg, #ea580c 0%, #f97316 100%);
+            box-shadow: 0 10px 15px -3px rgba(234, 88, 12, 0.3);
+        }
+        
+        .btn-pay {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+        }
+
+        /* Mobile Menu Animation */
+        #mobile-menu {
+            transition: transform 0.3s ease-in-out;
+            transform: translateX(100%);
+        }
+        #mobile-menu.active {
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body class="text-slate-900 hero-gradient">
+
+    <nav class="glass-nav fixed w-full z-50 px-4 md:px-6 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 md:w-10 md:h-10 bg-orange-600 rounded-lg md:rounded-xl flex items-center justify-center text-white font-bold text-lg md:text-xl">SR</div>
+                <span class="text-lg md:text-2xl font-extrabold tracking-tight italic">Shri Radha Tiffin Service</span>
+            </div>
+
+            <div class="hidden md:flex items-center gap-8 font-semibold text-slate-600">
+                <a href="#home" class="hover:text-orange-600 transition">Home</a>
+                <a href="#plans" class="hover:text-orange-600 transition">Plans</a>
+                <a href="https://lustrous-tartufo-034764.netlify.app/" class="text-orange-600">Login</a>
+                <a href="#order-form" class="btn-premium text-white px-6 py-2.5 rounded-full hover:scale-105 transition">Start Order</a>
+            </div>
+
+            <button id="menu-toggle" class="md:hidden text-2xl text-slate-800">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <div id="mobile-menu" class="fixed inset-0 bg-white z-[60] flex flex-col p-8 md:hidden">
+        <div class="flex justify-end">
+            <button id="menu-close" class="text-3xl text-slate-800">&times;</button>
+        </div>
+        <div class="flex flex-col gap-8 mt-12 text-2xl font-bold text-slate-800">
+            <a href="#home" class="mobile-link">Home</a>
+            <a href="#plans" class="mobile-link">Plans</a>
+            <a href="https://lustrous-tartufo-034764.netlify.app/" class="mobile-link">Login</a>
+            <a href="#order-form" class="btn-premium text-white text-center py-4 rounded-2xl mobile-link">Start Order</a>
+        </div>
+    </div>
+
+    <section id="home" class="pt-28 md:pt-40 pb-12 md:pb-20 px-4 md:px-6">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div class="text-center md:text-left">
+                <span class="bg-orange-100 text-orange-700 px-4 py-1.5 rounded-full text-xs md:text-sm font-bold tracking-wide uppercase mb-6 inline-block">Indore's #1 Tiffin Service</span>
+                <h1 class="text-4xl md:text-7xl font-black leading-tight mb-6">Experience <br><span class="text-orange-600">Pure Taste.</span></h1>
+                <p class="text-base md:text-lg text-slate-600 mb-8 max-w-lg mx-auto md:mx-0 leading-relaxed">Bundelkhandi food, prepared fresh in a hygienic kitchen, delivered on time to your doorstep.</p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                    <a href="#order-form" class="btn-premium text-white px-8 py-4 rounded-2xl font-bold text-lg flex items-center justify-center">
+                        Order Now <i class="fas fa-arrow-right ml-3 text-sm"></i>
+                    </a>
+                    <a href="tel:+918319374266" class="bg-white border-2 border-slate-200 text-slate-800 px-8 py-4 rounded-2xl font-bold text-lg flex items-center justify-center hover:bg-slate-50 transition">
+                        <i class="fas fa-phone-alt mr-3"></i> Contact Sales
+                    </a>
+                </div>
+            </div>
+            <div class="relative mt-8 md:mt-0">
+                <img src="https://raw.githubusercontent.com/omt8861/localrepo/refs/heads/main/tiffine%20image.png" class="rounded-3xl md:rounded-[3rem] shadow-2xl w-full object-cover h-[300px] md:h-auto">
+                <div class="absolute -bottom-6 -left-4 md:-bottom-10 md:-left-10 bg-white p-4 md:p-8 rounded-2xl md:rounded-3xl shadow-xl border border-slate-100 max-w-[200px] md:max-w-none">
+                    <div class="flex items-center gap-3 md:gap-4">
+                        <div class="bg-green-100 p-2 md:p-3 rounded-full text-green-600"><i class="fas fa-check-double text-lg md:text-xl"></i></div>
+                        <div>
+                            <p class="font-bold text-slate-900 text-xs md:text-base">100% Quality</p>
+                            <p class="text-[10px] md:text-sm text-slate-500 italic">Bundelkhandi Special</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="plans" class="py-16 md:py-24 px-4 md:px-6 bg-white/50">
+        <div class="max-w-7xl mx-auto text-center mb-12 md:mb-20">
+            <h2 class="text-3xl md:text-5xl font-extrabold mb-4 md:mb-6">Choose Your <span class="text-orange-600">Experience.</span></h2>
+            <p class="text-slate-500 text-base md:text-lg italic px-4">Strategic meal plans designed for students and professionals in Indore.</p>
+        </div>
+
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+            <div class="bg-white p-6 md:p-8 rounded-[2rem] md:rounded-[2.5rem] corporate-card shadow-sm">
+                <h3 class="text-slate-400 font-bold text-xs uppercase tracking-widest mb-6">On-Demand</h3>
+                <div class="mb-8">
+                    <div class="flex justify-between items-end mb-4">
+                        <span class="text-slate-800 font-bold text-lg italic">Daily Delight</span>
+                        <span class="text-2xl md:text-3xl font-black">₹69</span>
+                    </div>
+                    <div class="flex justify-between items-end">
+                        <span class="text-orange-600 font-bold text-lg italic">Weekend Box</span>
+                        <span class="text-2xl md:text-3xl font-black">₹79</span>
+                    </div>
+                </div>
+                <ul class="space-y-3 text-slate-600 text-sm md:text-base mb-6">
+                    <li><i class="fas fa-circle-check text-green-500 mr-2"></i> Free Local Delivery</li>
+                    <li><i class="fas fa-circle-check text-green-500 mr-2"></i> Thursday/Sunday Special</li>
+                </ul>
+            </div>
+
+            <div class="bg-white p-6 md:p-8 rounded-[2rem] md:rounded-[2.5rem] corporate-card shadow-lg ring-2 ring-orange-500 relative overflow-hidden">
+                <div class="absolute top-0 right-0 bg-orange-600 text-white px-4 py-1.5 rounded-bl-xl font-bold text-[10px] uppercase tracking-widest">Most Popular</div>
+                <h3 class="text-slate-400 font-bold text-xs uppercase tracking-widest mb-6">Monthly - 1 Meal/Day</h3>
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center bg-slate-50 p-4 rounded-xl">
+                        <span class="font-bold text-sm">Economy (4 Roti)</span>
+                        <span class="font-black text-lg">₹1,399</span>
+                    </div>
+                    <div class="flex justify-between items-center bg-orange-50 p-4 rounded-xl border border-orange-100">
+                        <span class="font-bold text-sm">Value (5 Roti+28 Box)</span>
+                        <span class="font-black text-lg">₹1,499</span>
+                    </div>
+                    <div class="flex justify-between items-center bg-slate-50 p-4 rounded-xl">
+                        <span class="font-bold text-sm">Standard Daily</span>
+                        <span class="font-black text-lg">₹1,499</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-slate-900 p-6 md:p-8 rounded-[2rem] md:rounded-[2.5rem] corporate-card text-white">
+                <h3 class="text-slate-500 font-bold text-xs uppercase tracking-widest mb-6">Monthly - 2 Meals/Day</h3>
+                <div class="space-y-4 mb-8">
+                    <div class="flex justify-between border-b border-slate-800 pb-3 text-sm">
+                        <span class="text-slate-300 italic">4 Roti Plan</span>
+                        <span class="font-bold">₹2,499</span>
+                    </div>
+                    <div class="flex justify-between border-b border-slate-800 pb-3 text-sm">
+                        <span class="text-slate-300 italic">56 Box Premium</span>
+                        <span class="font-bold">₹2,699</span>
+                    </div>
+                    <div class="flex justify-between border-b border-slate-800 pb-3 text-sm">
+                        <span class="text-slate-300 italic">8 Roti Deluxe</span>
+                        <span class="font-bold">₹2,999</span>
+                    </div>
+                    <div class="flex justify-between pb-3 text-orange-400 text-sm">
+                        <span class="font-bold underline italic">10 Roti Royal</span>
+                        <span class="font-black">₹3,399</span>
+                    </div>
+                </div>
+                <a href="#order-form" class="block w-full bg-white text-slate-900 py-4 rounded-xl text-center font-bold hover:bg-orange-500 hover:text-white transition">Get Started</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="order-form" class="py-16 md:py-24 px-4 md:px-6">
+        <div class="max-w-4xl mx-auto">
+            <div class="bg-white rounded-[2rem] md:rounded-[3rem] shadow-2xl flex flex-col md:flex-row overflow-hidden border border-slate-100">
+                <div class="md:w-1/3 bg-slate-900 p-8 md:p-12 text-white">
+                    <h2 class="text-3xl font-bold mb-4">Order Portal.</h2>
+                    <p class="text-slate-400 leading-relaxed mb-8 text-sm">Select your plan and payment method to proceed.</p>
+                    <div class="space-y-4 text-xs">
+                        <p><i class="fas fa-map-pin text-orange-600 mr-2"></i> Bhawarkua, Indore</p>
+                        <p><i class="fas fa-clock text-orange-600 mr-2"></i> Fast Confirm System</p>
+                    </div>
+                </div>
+                
+                <div class="md:w-2/3 p-6 md:p-12">
+                    <form id="proForm" class="space-y-5">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="space-y-1">
+                                <label class="text-[10px] font-black uppercase text-slate-500">Full Name</label>
+                                <input type="text" id="pName" required class="w-full bg-slate-50 px-5 py-3 rounded-xl border-none focus:ring-2 focus:ring-orange-500 outline-none" placeholder="Name">
+                            </div>
+                            <div class="space-y-1">
+                                <label class="text-[10px] font-black uppercase text-slate-500">Contact Number</label>
+                                <input type="tel" id="pPhone" required class="w-full bg-slate-50 px-5 py-3 rounded-xl border-none focus:ring-2 focus:ring-orange-500 outline-none" placeholder="Mobile">
+                            </div>
+                        </div>
+
+                        <div class="space-y-1">
+                            <label class="text-[10px] font-black uppercase text-slate-500">Choose Your Plan</label>
+                            <select id="pPlan" required class="w-full bg-slate-50 px-5 py-3 rounded-xl border-none focus:ring-2 focus:ring-orange-500 outline-none appearance-none">
+                                <option value="" disabled selected>Select a plan...</option>
+                                <optgroup label="Single/Trial Meals">
+                                    <option value="Daily Delight (₹69)" data-price="69">Daily Delight - ₹69</option>
+                                    <option value="Weekend Special (₹79)" data-price="79">Weekend Special Box - ₹79</option>
+                                </optgroup>
+                                <optgroup label="Monthly (1 Meal/Day)">
+                                    <option value="Economy 1-Meal (₹1399)" data-price="1399">Economy (4 Roti) - ₹1399</option>
+                                    <option value="Value 1-Meal (₹1499)" data-price="1499">Value (5 Roti+28 Box) - ₹1499</option>
+                                </optgroup>
+                                <optgroup label="Monthly (2 Meals/Day)">
+                                    <option value="Basic Double (₹2499)" data-price="2499">Basic (4 Roti Both) - ₹2499</option>
+                                    <option value="Royal Double (₹3399)" data-price="3399">Royal (10 Roti Both) - ₹3399</option>
+                                </optgroup>
+                            </select>
+                        </div>
+
+                        <div class="space-y-1">
+                            <label class="text-[10px] font-black uppercase text-slate-500">Payment Method</label>
+                            <select id="pMethod" required class="w-full bg-slate-50 px-5 py-3 rounded-xl border-none focus:ring-2 focus:ring-orange-500 outline-none">
+                                <option value="COD">Cash on Delivery / Pay after Trial</option>
+                                <option value="Online">Prepaid (Online UPI)</option>
+                            </select>
+                        </div>
+
+                        <div id="payButtonContainer" class="hidden">
+                            <button type="button" id="payNowBtn" class="w-full btn-pay text-white font-bold py-3 rounded-xl flex items-center justify-center text-sm">
+                                <i class="fas fa-mobile-alt mr-3"></i> Pay via UPI App
+                            </button>
+                        </div>
+
+                        <div class="space-y-1">
+                            <label class="text-[10px] font-black uppercase text-slate-500">Delivery Address</label>
+                            <textarea id="pAddress" required rows="2" class="w-full bg-slate-50 px-5 py-3 rounded-xl border-none focus:ring-2 focus:ring-orange-500 outline-none" placeholder="Full Address in Indore"></textarea>
+                        </div>
+
+                        <button type="submit" id="submitBtn" class="w-full btn-premium text-white font-bold py-4 rounded-xl text-base flex items-center justify-center">
+                            Complete via WhatsApp <i class="fab fa-whatsapp ml-3 text-xl"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-slate-900 py-10 px-4 text-center text-slate-500 text-xs">
+        <p>© 2026 Shri Radha Tiffin Logistics Group.</p>
+    </footer>
+
+    <script>
+        // --- Mobile Menu Logic ---
+        const menuToggle = document.getElementById('menu-toggle');
+        const menuClose = document.getElementById('menu-close');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        menuToggle.addEventListener('click', () => mobileMenu.classList.add('active'));
+        menuClose.addEventListener('click', () => mobileMenu.classList.remove('active'));
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => mobileMenu.classList.remove('active'));
+        });
+
+        // --- Form Logic ---
+        const pMethod = document.getElementById('pMethod');
+        const payButtonContainer = document.getElementById('payButtonContainer');
+        const payNowBtn = document.getElementById('payNowBtn');
+        const pPlan = document.getElementById('pPlan');
+        let paymentDone = false;
+
+        pMethod.addEventListener('change', function() {
+            if (this.value === 'Online') {
+                payButtonContainer.classList.remove('hidden');
+                paymentDone = false;
+            } else {
+                payButtonContainer.classList.add('hidden');
+                paymentDone = true; 
+            }
+        });
+
+        payNowBtn.addEventListener('click', function() {
+            const planSelect = pPlan.options[pPlan.selectedIndex];
+            const price = planSelect.getAttribute('data-price');
+            const name = document.getElementById('pName').value || "Customer";
+            
+            if (!price) {
+                alert("Please select a plan first.");
+                return;
+            }
+
+            const upiUrl = `upi://pay?pa=8319374266@ybl&pn=Shri%20Radha%20Tiffin&am=${price}&cu=INR&tn=Order%20for%20${name}`;
+            window.location.href = upiUrl;
+            paymentDone = true;
+            payNowBtn.innerHTML = '<i class="fas fa-check-circle mr-3"></i> Payment Initiated';
+            payNowBtn.classList.replace('btn-pay', 'bg-green-600');
+        });
+
+        document.getElementById('proForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            if (pMethod.value === 'Online' && !paymentDone) {
+                alert("Please click 'Pay via UPI App' before completing.");
+                return;
+            }
+
+            const name = document.getElementById('pName').value;
+            const phone = document.getElementById('pPhone').value;
+            const plan = document.getElementById('pPlan').value;
+            const address = document.getElementById('pAddress').value;
+            const method = document.getElementById('pMethod').value;
+            const ownerWhatsApp = "918319374266"; 
+            
+            const status = (method === 'Online') ? "✅ PAID ONLINE" : "⏳ UNPAID (COD/TRIAL)";
+
+            const message = `*NEW ORDER: SHRI RADHA TIFFIN*%0A%0A` +
+                            `*CLIENT:* ${name}%0A` +
+                            `*PHONE:* ${phone}%0A` +
+                            `*PLAN:* ${plan}%0A` +
+                            `*METHOD:* ${method}%0A` +
+                            `*STATUS:* ${status}%0A` +
+                            `*ADDRESS:* ${address}`;
+            
+            window.open(`https://wa.me/${ownerWhatsApp}?text=${message}`, '_blank');
+        });
+    </script>
+</body>
+</html>
